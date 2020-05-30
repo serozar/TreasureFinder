@@ -1,18 +1,16 @@
 package com.seroza.treasurefinder.game;
 
 public class Treasure {
-    private int hiddenLevel;
     private double x;
     private double y;
     private double radius;
     private double velocityX;
     private double velocityY;
 
-    public Treasure(double x, double y, int level) {
+    public Treasure(double x, double y, int radius) {
         this.x = x;
         this.y = y;
-        this.hiddenLevel = level;
-        radius = 100;
+        this.radius = radius;
     }
 
     public double distanceFrom(double x, double y){
@@ -27,14 +25,6 @@ public class Treasure {
         if(isColliding(x, y))
             return true;
         return false;
-    }
-
-    public int getHiddenLevel() {
-        return hiddenLevel;
-    }
-
-    public void setHiddenLevel(int hiddenLevel) {
-        this.hiddenLevel = hiddenLevel;
     }
 
     public double getX() {

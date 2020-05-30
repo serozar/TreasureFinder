@@ -10,25 +10,28 @@ public class Game {
 
     private int width;
     private int height;
-    private int level;
+    private int level = 1;
 
     private List<Treasure> treasures = new ArrayList<>();
+    private List<Bomb> bombs = new ArrayList<>();
+
+    public Game(int level) {
+        this.level = level;
+    }
 
     public boolean findTreasure(double x, double y) {
         for (Treasure t : treasures) {
             if (t.find(x, y)) {
-                // TODO: 5/26/2020 uncomment this
                 treasures.remove(t);
+                if (treasures.isEmpty())
+                    loadLevel(++level);
                 return true;
             }
         }
         return false;
     }
 
-    public Game() {
-    }
-
-    public double getClosestDistance(double x, double y) {
+    public double getClosestTreasureDistance(double x, double y) {
         double min = height;
         for (Treasure t : treasures) {
             double dist = t.distanceFrom(x, y);
@@ -38,12 +41,28 @@ public class Game {
         return min;
     }
 
+    public double getClosestBombDistance(double x, double y) {
+        double min = height;
+        for (Bomb b : bombs) {
+            double dist = b.distanceFrom(x, y);
+            if (dist < min)
+                min = dist;
+        }
+        return min;
+    }
 
-    public void newTreasure(int level) {
+    public void newTreasure(int radius) {
         Random random = new Random();
         double x = WIDTH_PADDING + ((width - WIDTH_PADDING) - WIDTH_PADDING) * random.nextDouble();
         double y = HEIGHT_PADDING + ((height - HEIGHT_PADDING) - HEIGHT_PADDING) * random.nextDouble();
-        treasures.add(new Treasure(x, y, level));
+        treasures.add(new Treasure(x, y, radius));
+    }
+
+    public void newBomb(int level) {
+        Random random = new Random();
+        double x = WIDTH_PADDING + ((width - WIDTH_PADDING) - WIDTH_PADDING) * random.nextDouble();
+        double y = HEIGHT_PADDING + ((height - HEIGHT_PADDING) - HEIGHT_PADDING) * random.nextDouble();
+        bombs.add(new Bomb(x, y, level));
     }
 
     public void newTreasure(int level, double velocityX, double velocityY) {
@@ -73,20 +92,46 @@ public class Game {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public List<Treasure> getTreasures() {
         return treasures;
     }
 
-    public void setTreasures(List<Treasure> treasures) {
-        this.treasures = treasures;
+    public List<Bomb> getBombs() {
+        return bombs;
     }
 
     public void start(int level) {
-        newTreasure(level);
-        newTreasure(level);
+        loadLevel(1);
+    }
+
+    private void loadLevel(int level) {
+        treasures.clear();
+        bombs.clear();
+        switch (level) {
+            case 1:
+                treasures.add(new Treasure(width * 0.5, height * 0.4, 100));
+                break;
+            case 2:
+                treasures.add(new Treasure(width * 0.9, height * 0.9, 100));
+                break;
+            case 3:
+                treasures.add(new Treasure(width * 0.2, height * 0.2, 100));
+                treasures.add(new Treasure(width * 0.5, height * 0.8, 100));
+                break;
+            case 4:
+                bombs.add(new Bomb(width * 0.5, height * 0.8, 50));
+                treasures.add(new Treasure(width * 0.5, height * 0.2, 100));
+                break;
+            default:
+                newTreasure(50);
+        }
+    }
+
+    public void save() {
+
+    }
+
+    public void load() {
+
     }
 }
