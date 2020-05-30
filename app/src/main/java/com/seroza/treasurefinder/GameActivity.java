@@ -1,11 +1,11 @@
 package com.seroza.treasurefinder;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.seroza.treasurefinder.game.Game;
-import com.seroza.treasurefinder.game.LevelView;
+import com.seroza.treasurefinder.view.LevelView;
 
 public class GameActivity extends AppCompatActivity {
 
