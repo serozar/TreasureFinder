@@ -24,8 +24,10 @@ public class GameActivity extends AppCompatActivity implements TextToSpeech.OnIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tts = new TextToSpeech(this, this, "com.google.android.tts");
-        savedInstanceState.getInt("");
-        game = new Game(loadGame());
+        if (getIntent().getExtras().getBoolean("continue", false))
+            game = new Game(loadGame());
+        else
+            game = new Game();
         gameInterface = new GameInterface(this, game, this);
         //setContentView(R.layout.activity_game);
         setContentView(gameInterface);
@@ -33,14 +35,8 @@ public class GameActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public void onInit(int status) {
-        // TODO Auto-generated method stub
-
         if (status == TextToSpeech.SUCCESS) {
-
             int result = tts.setLanguage(Locale.US);
-
-            // tts.setPitch(0.5f); // set pitch level
-
             tts.setSpeechRate(0.6f); // set speech speed rate
 
             if (result == TextToSpeech.LANG_MISSING_DATA
@@ -61,13 +57,27 @@ public class GameActivity extends AppCompatActivity implements TextToSpeech.OnIn
             tts.stop();
             tts.shutdown();
         }
+        saveGame();
         super.onDestroy();
     }
+
+    @Override
+    protected void onPause() {
+        saveGame();
+        super.onPause();
+    }
+
 
     @Override
     public void speak(String text) {
         message = text;
         tts.speak(text, TextToSpeech.QUEUE_ADD, null, null);
+    }
+
+    @Override
+    public void shortSpeak(String text) {
+        message = text;
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }
 
     private void saveGame() {
@@ -80,12 +90,5 @@ public class GameActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private int loadGame() {
         SharedPreferences sp = getSharedPreferences("game_prefs", Activity.MODE_PRIVATE);
         return sp.getInt("level", 1);
-    }
-
-    private void newGame() {
-        SharedPreferences sp = getSharedPreferences("game_prefs", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("level", 1);
-        editor.apply();
     }
 }

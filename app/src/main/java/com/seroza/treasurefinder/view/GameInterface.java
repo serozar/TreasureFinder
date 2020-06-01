@@ -77,7 +77,7 @@ public class GameInterface extends View {
         super.onLayout(changed, left, top, right, bottom);
         game.setWidth(getWidth());
         game.setHeight(getHeight());
-        game.start(0);
+        game.start(game.getLevel());
     }
 
     @Override
@@ -117,6 +117,12 @@ public class GameInterface extends View {
                 double x_cord = event.getX();
                 double y_cord = event.getY();
                 if (!game.findTreasure(x_cord, y_cord)) {
+                    if (game.findBomb(x_cord, y_cord)) {
+                        tts.shortSpeak("Bomb detonated");
+                        vibrate();
+                        invalidate();
+                        break;
+                    }
                     playTreasureSound(x_cord, y_cord);
                     playBombSound(x_cord, y_cord);
                 } else {
@@ -187,10 +193,6 @@ public class GameInterface extends View {
         // Get instance of Vibrator from current Context
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-        int strong_vibration = 5; //vibrate with a full power for 30 secs
-        int interval = 1000;
-        int dot = 1; //one millisecond of vibration
-        int short_gap = 10; //one millisecond of break - could be more to weaken the vibration
         long[] pattern = {
                 0, 100, 1000, 300
         };
@@ -202,6 +204,8 @@ public class GameInterface extends View {
 
     public interface TTS {
         void speak(String text);
+
+        void shortSpeak(String text);
     }
 
 }

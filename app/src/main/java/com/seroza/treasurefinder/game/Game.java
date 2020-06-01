@@ -15,6 +15,9 @@ public class Game {
     private List<Treasure> treasures = new ArrayList<>();
     private List<Bomb> bombs = new ArrayList<>();
 
+    public Game() {
+    }
+
     public Game(int level) {
         this.level = level;
     }
@@ -25,6 +28,16 @@ public class Game {
                 treasures.remove(t);
                 if (treasures.isEmpty())
                     loadLevel(++level);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean findBomb(double x, double y) {
+        for (Bomb b : bombs) {
+            if (b.find(x, y)) {
+                loadLevel(level);
                 return true;
             }
         }
@@ -101,7 +114,7 @@ public class Game {
     }
 
     public void start(int level) {
-        loadLevel(1);
+        loadLevel(4);
     }
 
     private void loadLevel(int level) {
@@ -122,8 +135,22 @@ public class Game {
                 bombs.add(new Bomb(width * 0.5, height * 0.8, 50));
                 treasures.add(new Treasure(width * 0.5, height * 0.2, 100));
                 break;
+            case 5:
+                bombs.add(new Bomb(width * 0.1, height * 0.1, 50));
+                bombs.add(new Bomb(width * 0.2, height * 0.2, 50));
+                treasures.add(new Treasure(width * 0.5, height * 0.8, 100));
+                break;
+            case 6:
+                bombs.add(new Bomb(width * 0.5, height * 0.5, 50));
+                treasures.add(new Treasure(width * 0.1, height * 0.9, 100));
+                treasures.add(new Treasure(width * 0.9, height * 0.9, 100));
+                treasures.add(new Treasure(width * 0.1, height * 0.1, 100));
+                treasures.add(new Treasure(width * 0.9, height * 0.1, 100));
+                break;
             default:
                 newTreasure(50);
+                newTreasure(50);
+                newBomb(50);
         }
     }
 
