@@ -29,7 +29,7 @@
         android:layout_height="100dp"
         android:layout_marginBottom="10sp"
         android:background="#FFFFFF"
-        android:text="Start"
+        android:text="New Game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
