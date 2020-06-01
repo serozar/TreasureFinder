@@ -114,7 +114,7 @@ public class Game {
     }
 
     public void start(int level) {
-        loadLevel(4);
+        loadLevel(level);
     }
 
     private void loadLevel(int level) {
@@ -146,6 +146,13 @@ public class Game {
                 treasures.add(new Treasure(width * 0.9, height * 0.9, 100));
                 treasures.add(new Treasure(width * 0.1, height * 0.1, 100));
                 treasures.add(new Treasure(width * 0.9, height * 0.1, 100));
+                break;
+            case 7:
+                treasures.add(new Treasure(width * 0.5, height * 0.5, 100));
+                bombs.add(new Bomb(width * 0.1, height * 0.9, 50));
+                bombs.add(new Bomb(width * 0.9, height * 0.9, 50));
+                bombs.add(new Bomb(width * 0.1, height * 0.1, 50));
+                bombs.add(new Bomb(width * 0.9, height * 0.1, 50));
                 break;
             default:
                 newTreasure(50);
